@@ -1,0 +1,703 @@
+ncsim> 
+ncsim> database -open waves -into waves.shm -default
+Created default SHM database waves
+ncsim> probe -create -shm tb_sequence_detector_1011.A tb_sequence_detector_1011.\
+B tb_sequence_detector_1011.and_y tb_sequence_detector_1011.clk tb_sequence_dete\
+ctor_1011.dff_D tb_sequence_detector_1011.dff_Q tb_sequence_detector_1011.expect\
+ed_detect tb_sequence_detector_1011.expected_next tb_sequence_detector_1011.expe\
+cted_next_after_clock tb_sequence_detector_1011.fail_count tb_sequence_detector_\
+1011.model_detected tb_sequence_detector_1011.model_state tb_sequence_detector_1\
+011.mux_I0 tb_sequence_detector_1011.mux_I1 tb_sequence_detector_1011.mux_S tb_s\
+equence_detector_1011.mux_Y tb_sequence_detector_1011.not_y tb_sequence_detector\
+_1011.or_y tb_sequence_detector_1011.output_detected tb_sequence_detector_1011.o\
+utput_din tb_sequence_detector_1011.output_state tb_sequence_detector_1011.pass_\
+count tb_sequence_detector_1011.r_detected tb_sequence_detector_1011.reset tb_se\
+quence_detector_1011.s_detected tb_sequence_detector_1011.s_next_state tb_sequen\
+ce_detector_1011.s_state tb_sequence_detector_1011.test_din tb_sequence_detector\
+_1011.test_next_state tb_sequence_detector_1011.test_next_state_reg tb_sequence_\
+detector_1011.test_state tb_sequence_detector_1011.test_state_reg tb_sequence_de\
+tector_1011.xor_y
+Created probe 1
+ncsim> run
+TIME=0 | RESET=0 | DIN=0 | STATE=xx | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+
+========================================
+TEST 1 : BASIC GATES
+========================================
+PASS :                     NOT 00 | Expected=1 Actual=1
+PASS :                     AND 00 | Expected=0 Actual=0
+PASS :                      OR 00 | Expected=0 Actual=0
+PASS :                     XOR 00 | Expected=0 Actual=0
+PASS :                     NOT 01 | Expected=1 Actual=1
+PASS :                     AND 01 | Expected=0 Actual=0
+PASS :                      OR 01 | Expected=1 Actual=1
+PASS :                     XOR 01 | Expected=1 Actual=1
+PASS :                     NOT 10 | Expected=0 Actual=0
+PASS :                     AND 10 | Expected=0 Actual=0
+PASS :                      OR 10 | Expected=1 Actual=1
+PASS :                     XOR 10 | Expected=1 Actual=1
+TIME=5000 | RESET=0 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :                     NOT 11 | Expected=0 Actual=0
+PASS :                     AND 11 | Expected=1 Actual=1
+PASS :                      OR 11 | Expected=1 Actual=1
+PASS :                     XOR 11 | Expected=0 Actual=0
+
+========================================
+TEST 2 : 2:1 MUX
+========================================
+PASS :              MUX select I0 | Expected=0 Actual=0
+PASS :              MUX select I1 | Expected=1 Actual=1
+PASS :          MUX select I0 = 1 | Expected=1 Actual=1
+PASS :          MUX select I1 = 0 | Expected=0 Actual=0
+
+========================================
+TEST 3 : D FLIP-FLOP
+========================================
+TIME=10000 | RESET=1 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :                  DFF reset | Expected=0 Actual=0
+TIME=16000 | RESET=0 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :              DFF capture 1 | Expected=1 Actual=1
+PASS :              DFF capture 0 | Expected=0 Actual=0
+
+========================================
+TEST 4 : 2-BIT STATE REGISTER
+========================================
+TIME=36000 | RESET=1 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :       State register reset | Expected=00 Actual=00
+TIME=46000 | RESET=0 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :       State register -> S1 | Expected=01 Actual=01
+PASS :       State register -> S2 | Expected=10 Actual=10
+PASS :       State register -> S3 | Expected=11 Actual=11
+
+========================================
+TEST 5 : ALL FSM TRANSITIONS
+========================================
+PASS :               S0 + 0 -> S0 | Expected=00 Actual=00
+TIME=77000 | RESET=0 | DIN=1 | STATE=00 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :               S0 + 1 -> S1 | Expected=01 Actual=01
+TIME=78000 | RESET=0 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :               S1 + 0 -> S2 | Expected=10 Actual=10
+TIME=79000 | RESET=0 | DIN=1 | STATE=00 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :               S1 + 1 -> S1 | Expected=01 Actual=01
+TIME=80000 | RESET=0 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :               S2 + 0 -> S0 | Expected=00 Actual=00
+TIME=81000 | RESET=0 | DIN=1 | STATE=00 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :               S2 + 1 -> S3 | Expected=11 Actual=11
+TIME=82000 | RESET=0 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :               S3 + 0 -> S2 | Expected=10 Actual=10
+TIME=83000 | RESET=0 | DIN=1 | STATE=00 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :               S3 + 1 -> S1 | Expected=01 Actual=01
+
+========================================
+TEST 6 : OUTPUT LOGIC
+========================================
+PASS :           S0 + 0 detection | Expected=0 Actual=0
+TIME=85000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :           S0 + 1 detection | Expected=0 Actual=0
+PASS :           S1 + 0 detection | Expected=0 Actual=0
+PASS :           S1 + 1 detection | Expected=0 Actual=0
+PASS :           S2 + 0 detection | Expected=0 Actual=0
+PASS :           S2 + 1 detection | Expected=0 Actual=0
+PASS :           S3 + 0 detection | Expected=0 Actual=0
+PASS :           S3 + 1 detection | Expected=1 Actual=1
+
+========================================
+TEST 7 : RESET
+========================================
+TIME=92000 | RESET=1 | DIN=0 | STATE=01 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=95000 | RESET=1 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :     Reset -> Structural S0 | Expected=00 Actual=00
+PASS : t -> Structural detection | Expected=0 Actual=0
+PASS :     Reset -> RTL detection | Expected=0 Actual=0
+
+========================================
+TEST 8 : DETECT 1011
+========================================
+TIME=96000 | RESET=0 | DIN=1 | STATE=00 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=105000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=106000 | RESET=0 | DIN=0 | STATE=01 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=115000 | RESET=0 | DIN=0 | STATE=10 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=10 Actual=10
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=116000 | RESET=0 | DIN=1 | STATE=10 | NEXT=11 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=125000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=0
+PASS :   Structural current state | Expected=11 Actual=11
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=1 Actual=1
+PASS :              RTL detection | Expected=1 Actual=1
+PASS :          Structural vs RTL | Expected=1 Actual=1
+TIME=126000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=1
+TIME=135000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=1
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+
+========================================
+TEST 9 : 000000
+========================================
+TIME=136000 | RESET=1 | DIN=0 | STATE=01 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=145000 | RESET=1 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :     Reset -> Structural S0 | Expected=00 Actual=00
+PASS : t -> Structural detection | Expected=0 Actual=0
+PASS :     Reset -> RTL detection | Expected=0 Actual=0
+TIME=146000 | RESET=0 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=00 Actual=00
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+PASS :   Structural current state | Expected=00 Actual=00
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+PASS :   Structural current state | Expected=00 Actual=00
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+PASS :   Structural current state | Expected=00 Actual=00
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+PASS :   Structural current state | Expected=00 Actual=00
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+PASS :   Structural current state | Expected=00 Actual=00
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+
+========================================
+TEST 10 : PARTIAL 101
+========================================
+TIME=206000 | RESET=1 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :     Reset -> Structural S0 | Expected=00 Actual=00
+PASS : t -> Structural detection | Expected=0 Actual=0
+PASS :     Reset -> RTL detection | Expected=0 Actual=0
+TIME=216000 | RESET=0 | DIN=1 | STATE=00 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=225000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=226000 | RESET=0 | DIN=0 | STATE=01 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=235000 | RESET=0 | DIN=0 | STATE=10 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=10 Actual=10
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=236000 | RESET=0 | DIN=1 | STATE=10 | NEXT=11 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=245000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=0
+PASS :   Structural current state | Expected=11 Actual=11
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=1 Actual=1
+PASS :              RTL detection | Expected=1 Actual=1
+PASS :          Structural vs RTL | Expected=1 Actual=1
+
+========================================
+TEST 11 : 0001011
+========================================
+TIME=246000 | RESET=1 | DIN=0 | STATE=11 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=1
+TIME=255000 | RESET=1 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=1
+PASS :     Reset -> Structural S0 | Expected=00 Actual=00
+PASS : t -> Structural detection | Expected=0 Actual=0
+PASS :     Reset -> RTL detection | Expected=0 Actual=0
+TIME=256000 | RESET=0 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=00 Actual=00
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+PASS :   Structural current state | Expected=00 Actual=00
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+PASS :   Structural current state | Expected=00 Actual=00
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=286000 | RESET=0 | DIN=1 | STATE=00 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=295000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=296000 | RESET=0 | DIN=0 | STATE=01 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=305000 | RESET=0 | DIN=0 | STATE=10 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=10 Actual=10
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=306000 | RESET=0 | DIN=1 | STATE=10 | NEXT=11 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=315000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=0
+PASS :   Structural current state | Expected=11 Actual=11
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=1 Actual=1
+PASS :              RTL detection | Expected=1 Actual=1
+PASS :          Structural vs RTL | Expected=1 Actual=1
+TIME=316000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=1
+TIME=325000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=1
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+
+========================================
+TEST 12 : OVERLAPPING 1011011
+========================================
+TIME=326000 | RESET=1 | DIN=0 | STATE=01 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=335000 | RESET=1 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :     Reset -> Structural S0 | Expected=00 Actual=00
+PASS : t -> Structural detection | Expected=0 Actual=0
+PASS :     Reset -> RTL detection | Expected=0 Actual=0
+TIME=336000 | RESET=0 | DIN=1 | STATE=00 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=345000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=346000 | RESET=0 | DIN=0 | STATE=01 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=355000 | RESET=0 | DIN=0 | STATE=10 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=10 Actual=10
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=356000 | RESET=0 | DIN=1 | STATE=10 | NEXT=11 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=365000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=0
+PASS :   Structural current state | Expected=11 Actual=11
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=1 Actual=1
+PASS :              RTL detection | Expected=1 Actual=1
+PASS :          Structural vs RTL | Expected=1 Actual=1
+TIME=366000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=1
+TIME=375000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=1
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=376000 | RESET=0 | DIN=0 | STATE=01 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=385000 | RESET=0 | DIN=0 | STATE=10 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=10 Actual=10
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=386000 | RESET=0 | DIN=1 | STATE=10 | NEXT=11 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=395000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=0
+PASS :   Structural current state | Expected=11 Actual=11
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=1 Actual=1
+PASS :              RTL detection | Expected=1 Actual=1
+PASS :          Structural vs RTL | Expected=1 Actual=1
+TIME=396000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=1
+TIME=405000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=1
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+
+========================================
+TEST 13 : 111111
+========================================
+TIME=406000 | RESET=1 | DIN=0 | STATE=01 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=415000 | RESET=1 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :     Reset -> Structural S0 | Expected=00 Actual=00
+PASS : t -> Structural detection | Expected=0 Actual=0
+PASS :     Reset -> RTL detection | Expected=0 Actual=0
+TIME=416000 | RESET=0 | DIN=1 | STATE=00 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=425000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+
+========================================
+TEST 14 : 1000
+========================================
+TIME=476000 | RESET=1 | DIN=0 | STATE=01 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=485000 | RESET=1 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :     Reset -> Structural S0 | Expected=00 Actual=00
+PASS : t -> Structural detection | Expected=0 Actual=0
+PASS :     Reset -> RTL detection | Expected=0 Actual=0
+TIME=486000 | RESET=0 | DIN=1 | STATE=00 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=495000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=496000 | RESET=0 | DIN=0 | STATE=01 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=505000 | RESET=0 | DIN=0 | STATE=10 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=10 Actual=10
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=515000 | RESET=0 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=00 Actual=00
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+PASS :   Structural current state | Expected=00 Actual=00
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+
+========================================
+TEST 15 : EVERY FSM TRANSITION
+========================================
+TIME=526000 | RESET=1 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :     Reset -> Structural S0 | Expected=00 Actual=00
+PASS : t -> Structural detection | Expected=0 Actual=0
+PASS :     Reset -> RTL detection | Expected=0 Actual=0
+TIME=536000 | RESET=0 | DIN=1 | STATE=00 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=545000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=546000 | RESET=0 | DIN=0 | STATE=01 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=555000 | RESET=0 | DIN=0 | STATE=10 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=10 Actual=10
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=556000 | RESET=0 | DIN=1 | STATE=10 | NEXT=11 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=565000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=0
+PASS :   Structural current state | Expected=11 Actual=11
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=1 Actual=1
+PASS :              RTL detection | Expected=1 Actual=1
+PASS :          Structural vs RTL | Expected=1 Actual=1
+TIME=566000 | RESET=0 | DIN=0 | STATE=11 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=1
+TIME=575000 | RESET=0 | DIN=0 | STATE=10 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=1
+PASS :   Structural current state | Expected=10 Actual=10
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=576000 | RESET=0 | DIN=0 | STATE=10 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=585000 | RESET=0 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=00 Actual=00
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=586000 | RESET=0 | DIN=1 | STATE=00 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=595000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=606000 | RESET=0 | DIN=0 | STATE=01 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=615000 | RESET=0 | DIN=0 | STATE=10 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=10 Actual=10
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=616000 | RESET=0 | DIN=1 | STATE=10 | NEXT=11 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=625000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=0
+PASS :   Structural current state | Expected=11 Actual=11
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=1 Actual=1
+PASS :              RTL detection | Expected=1 Actual=1
+PASS :          Structural vs RTL | Expected=1 Actual=1
+TIME=626000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=1
+TIME=635000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=1
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+
+========================================
+TEST 16 : RESET RECOVERY
+========================================
+TIME=636000 | RESET=1 | DIN=0 | STATE=01 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=645000 | RESET=1 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :     Reset -> Structural S0 | Expected=00 Actual=00
+PASS : t -> Structural detection | Expected=0 Actual=0
+PASS :     Reset -> RTL detection | Expected=0 Actual=0
+TIME=646000 | RESET=0 | DIN=1 | STATE=00 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=655000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=656000 | RESET=0 | DIN=0 | STATE=01 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=665000 | RESET=0 | DIN=0 | STATE=10 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=10 Actual=10
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=666000 | RESET=0 | DIN=1 | STATE=10 | NEXT=11 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=675000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=0
+PASS :   Structural current state | Expected=11 Actual=11
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=1 Actual=1
+PASS :              RTL detection | Expected=1 Actual=1
+PASS :          Structural vs RTL | Expected=1 Actual=1
+TIME=676000 | RESET=1 | DIN=0 | STATE=11 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=1
+TIME=685000 | RESET=1 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=1
+PASS :     Reset -> Structural S0 | Expected=00 Actual=00
+PASS : t -> Structural detection | Expected=0 Actual=0
+PASS :     Reset -> RTL detection | Expected=0 Actual=0
+PASS :       Reset recovery state | Expected=00 Actual=00
+PASS :   Reset recovery detection | Expected=0 Actual=0
+
+========================================
+TEST 17 : STRUCTURAL VS RTL
+========================================
+TIME=686000 | RESET=1 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :     Reset -> Structural S0 | Expected=00 Actual=00
+PASS : t -> Structural detection | Expected=0 Actual=0
+PASS :     Reset -> RTL detection | Expected=0 Actual=0
+TIME=696000 | RESET=0 | DIN=1 | STATE=00 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=705000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=706000 | RESET=0 | DIN=0 | STATE=01 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=715000 | RESET=0 | DIN=0 | STATE=10 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=10 Actual=10
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=716000 | RESET=0 | DIN=1 | STATE=10 | NEXT=11 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=725000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=0
+PASS :   Structural current state | Expected=11 Actual=11
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=1 Actual=1
+PASS :              RTL detection | Expected=1 Actual=1
+PASS :          Structural vs RTL | Expected=1 Actual=1
+TIME=726000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=1
+TIME=735000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=1
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=736000 | RESET=0 | DIN=0 | STATE=01 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=745000 | RESET=0 | DIN=0 | STATE=10 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=10 Actual=10
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=746000 | RESET=0 | DIN=1 | STATE=10 | NEXT=11 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=755000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=0
+PASS :   Structural current state | Expected=11 Actual=11
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=1 Actual=1
+PASS :              RTL detection | Expected=1 Actual=1
+PASS :          Structural vs RTL | Expected=1 Actual=1
+TIME=756000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=1
+TIME=765000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=1
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=766000 | RESET=0 | DIN=0 | STATE=01 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=775000 | RESET=0 | DIN=0 | STATE=10 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=10 Actual=10
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=785000 | RESET=0 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=00 Actual=00
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=786000 | RESET=0 | DIN=1 | STATE=00 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=795000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=796000 | RESET=0 | DIN=0 | STATE=01 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=805000 | RESET=0 | DIN=0 | STATE=10 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=10 Actual=10
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=806000 | RESET=0 | DIN=1 | STATE=10 | NEXT=11 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=815000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=0
+PASS :   Structural current state | Expected=11 Actual=11
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=1 Actual=1
+PASS :              RTL detection | Expected=1 Actual=1
+PASS :          Structural vs RTL | Expected=1 Actual=1
+TIME=816000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=1
+TIME=825000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=1
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+
+========================================
+TEST 18 : REPEATED OVERLAP
+========================================
+TIME=826000 | RESET=1 | DIN=0 | STATE=01 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=835000 | RESET=1 | DIN=0 | STATE=00 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :     Reset -> Structural S0 | Expected=00 Actual=00
+PASS : t -> Structural detection | Expected=0 Actual=0
+PASS :     Reset -> RTL detection | Expected=0 Actual=0
+TIME=836000 | RESET=0 | DIN=1 | STATE=00 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=845000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=846000 | RESET=0 | DIN=0 | STATE=01 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=855000 | RESET=0 | DIN=0 | STATE=10 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=10 Actual=10
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=856000 | RESET=0 | DIN=1 | STATE=10 | NEXT=11 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=865000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=0
+PASS :   Structural current state | Expected=11 Actual=11
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=1 Actual=1
+PASS :              RTL detection | Expected=1 Actual=1
+PASS :          Structural vs RTL | Expected=1 Actual=1
+TIME=866000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=1
+TIME=875000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=1
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=876000 | RESET=0 | DIN=0 | STATE=01 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=885000 | RESET=0 | DIN=0 | STATE=10 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=10 Actual=10
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=886000 | RESET=0 | DIN=1 | STATE=10 | NEXT=11 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=895000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=0
+PASS :   Structural current state | Expected=11 Actual=11
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=1 Actual=1
+PASS :              RTL detection | Expected=1 Actual=1
+PASS :          Structural vs RTL | Expected=1 Actual=1
+TIME=896000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=1
+TIME=905000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=1
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=906000 | RESET=0 | DIN=0 | STATE=01 | NEXT=10 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=915000 | RESET=0 | DIN=0 | STATE=10 | NEXT=00 | STRUCT=0 | RTL=0 | MODEL=0
+PASS :   Structural current state | Expected=10 Actual=10
+PASS :      Structural next-state | Expected=00 Actual=00
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+TIME=916000 | RESET=0 | DIN=1 | STATE=10 | NEXT=11 | STRUCT=0 | RTL=0 | MODEL=0
+TIME=925000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=0
+PASS :   Structural current state | Expected=11 Actual=11
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=1 Actual=1
+PASS :              RTL detection | Expected=1 Actual=1
+PASS :          Structural vs RTL | Expected=1 Actual=1
+TIME=926000 | RESET=0 | DIN=1 | STATE=11 | NEXT=01 | STRUCT=1 | RTL=1 | MODEL=1
+TIME=935000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=1
+PASS :   Structural current state | Expected=01 Actual=01
+PASS :      Structural next-state | Expected=01 Actual=01
+PASS :       Structural detection | Expected=0 Actual=0
+PASS :              RTL detection | Expected=0 Actual=0
+PASS :          Structural vs RTL | Expected=0 Actual=0
+
+
+================================================
+DAY 14 - 1011 SEQUENCE DETECTOR VERIFICATION
+================================================
+FINAL PASS COUNT = 446
+FINAL FAIL COUNT = 0
+================================================
+ALL TESTS PASSED
+DAY 14 VERIFICATION SUCCESSFUL
+================================================
+TIME=936000 | RESET=0 | DIN=1 | STATE=01 | NEXT=01 | STRUCT=0 | RTL=0 | MODEL=0
+Simulation complete via $finish(1) at time 956 NS + 0
+./day14_tb.v:1215         $finish;
+ncsim> 
