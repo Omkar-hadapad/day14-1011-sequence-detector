@@ -3,7 +3,7 @@ ncsim> database -open waves -into waves.shm -default
 Created default SHM database waves
 ncsim> probe -create -shm tb_sequence_detector_1011.A tb_sequence_detector_1011.\
 B tb_sequence_detector_1011.and_y tb_sequence_detector_1011.clk tb_sequence_dete\
-ctor_1011.dff_D tb_sequence_detector_1011.dff_Q tb_sequence_detector_1011.expect\
+ctor_1011.dff_D  tb_sequence_detector_1011.dff_Q tb_sequence_detector_1011.expect\
 ed_detect tb_sequence_detector_1011.expected_next tb_sequence_detector_1011.expe\
 cted_next_after_clock tb_sequence_detector_1011.fail_count tb_sequence_detector_\
 1011.model_detected tb_sequence_detector_1011.model_state tb_sequence_detector_1\
